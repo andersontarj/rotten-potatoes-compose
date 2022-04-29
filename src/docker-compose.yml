@@ -1,0 +1,71 @@
+version: '3.8'
+
+# Deployment da app web Rotten Potatoes
+services:
+  rotten-potatoes:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    privileged: true
+    restart: always
+    container_name: rotten-potatoes
+    hostname: rotten-potatoes
+    ports:
+      - "8081:5000"
+    expose:
+      - '5000'
+    networks:
+      - mongo-net-rt
+    depends_on:
+      - mongodb-rp
+    environment:
+      MONGODB_HOST: mongodb-rp
+      MONGODB_USERNAME: mguser
+      MONGODB_PASSWORD: mgpwd123
+      MONGODB_PORT: '27017'
+      MONGODB_DB: admin
+
+# Deployment do MongoDB
+  mongodb-rp:
+    image: mongo:5.0.5
+    container_name: mongodb-rp
+    hostname: mongodb-rp
+    expose:
+      - '27017'
+    ports:
+    - 27017:27017
+    networks:
+      - mongo-net-rt
+    volumes:
+      - mongo_vol:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mguser
+      MONGO_INITDB_ROOT_PASSWORD: mgpwd123
+
+# Instalação e configuração da interface do Mongo-Express para gerenciamento do banco via console web.
+  mongodb-express-rp:
+    image: mongo-express
+    restart: always
+    container_name: mongo-express-rp
+    hostname: mongo-express-rp
+    expose:
+      - '8090'
+    ports:
+      - 8090:8081
+    networks:
+      - mongo-net-rt
+    depends_on:
+      - mongodb-rp
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb-rp
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mguser
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mgpwd123
+      ME_CONFIG_MONGODB_PORT: '27017'
+
+
+volumes:
+  mongo_vol:
+
+networks:
+  mongo-net-rt:
+    driver: bridge
