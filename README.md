@@ -19,10 +19,36 @@ EXPOSE 5000
 CMD ["gunicorn", "--workers=3", "--bind", "0.0.0.0:5000", "-c","config.py", "app:app"]
 ```
 
-Salve e feche o mesmo, agora crie um **docker-compose.yml**
+Salve e feche o mesmo. 
+Agora crie um **docker-compose.yml**, no compose vamos usar variáveis para facilitar concentrar a edição em um lugar, as declarações ficam no arquivo **.env** localizado dentro de *SRC*.
 
 ```
-docker image tag andersontarj/conversaotemperatura:v1 andersontarj/conversaotemperatura:latest	
+version: '3.8'
+
+# Deployment da app web Rotten Potatoes
+services:
+  rotten-potatoes:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    privileged: true
+    restart: always
+    container_name: ${CONTAINER_NAME}
+    hostname: ${APP_NAME}
+    ports:
+      - 8081:${PORT_APP}
+    expose:
+      - ${PORT_APP}
+    networks:
+      - ${NETWORK}
+    depends_on:
+      - ${DEPENDS}
+    environment:
+      MONGODB_HOST: mongodb-rp
+      MONGODB_USERNAME: mguser
+      MONGODB_PASSWORD: mgpwd123
+      MONGODB_PORT: ${MGDB_PORT}
+      MONGODB_DB: ${MGDB_DB}
 ```
 
 Executando a imagem criada:
