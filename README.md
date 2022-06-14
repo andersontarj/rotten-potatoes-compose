@@ -102,12 +102,16 @@ networks:
   mongo-net-rt:
     driver: bridge
 ```
+> **Nota:** Favor add uma senha no arquivo localizado em **src/.env** na variável **MGDB_PASSWORD=** pois a mesma está em branco.
+
+E execute o comando **docker-compose up -d** dentro do diretório da aplicação.
+
 Terá uma saída igual a abaixo:
 
 ![Diagrama](./imgs/contlist.png)
 
-Após a execução da imagem **andersontarj/conversaotemperatura** abra o navegador de sua preferencia e digite <http://localhost:8080>
+Após a execução da imagem **andersontarj/conversaotemperatura** abra o navegador de sua preferencia e digite <http://localhost:8081>
 
 Se tudo estiver correto você vera no navegador a tela igual a que está abaixo:
 
-![Diagrama](./imgs/convtemp.png)
+![Diagrama](./imgs/ropot.png)
