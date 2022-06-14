@@ -110,7 +110,7 @@ Terá uma saída igual a abaixo:
 
 ![Diagrama](./imgs/contlist.png)
 
-Após a execução da imagem **andersontarj/conversaotemperatura** abra o navegador de sua preferencia e digite <http://localhost:8081>
+Após a execução das imagens abra o navegador de sua preferencia e digite <http://localhost:8081>
 
 Se tudo estiver correto você vera no navegador a tela igual a que está abaixo:
 
