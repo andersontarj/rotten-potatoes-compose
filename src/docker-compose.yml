@@ -8,22 +8,22 @@ services:
       context: ./
     privileged: true
     restart: always
-    container_name: rotten-potatoes
-    hostname: rotten-potatoes
+    container_name: ${CONTAINER_NAME}
+    hostname: ${APP_NAME}
     ports:
-      - "8081:5000"
+      - 8081:${PORT_APP}
     expose:
-      - '5000'
+      - ${PORT_APP}
     networks:
-      - mongo-net-rt
+      - ${NETWORK}
     depends_on:
-      - mongodb-rp
+      - ${DEPENDS}
     environment:
       MONGODB_HOST: mongodb-rp
       MONGODB_USERNAME: mguser
       MONGODB_PASSWORD: mgpwd123
-      MONGODB_PORT: '27017'
-      MONGODB_DB: admin
+      MONGODB_PORT: ${MGDB_PORT}
+      MONGODB_DB: ${MGDB_DB}
 
 # Deployment do MongoDB
   mongodb-rp:
@@ -31,11 +31,11 @@ services:
     container_name: mongodb-rp
     hostname: mongodb-rp
     expose:
-      - '27017'
+      - ${MGDB_PORT}
     ports:
-    - 27017:27017
+      - ${MGDB_PORT}:${MGDB_PORT}
     networks:
-      - mongo-net-rt
+      - ${NETWORK}
     volumes:
       - mongo_vol:/data/db
     environment:
@@ -51,16 +51,16 @@ services:
     expose:
       - '8090'
     ports:
-      - 8090:8081
+      - 8090:${PORT_LOCAL}
     networks:
-      - mongo-net-rt
+      - ${NETWORK}
     depends_on:
-      - mongodb-rp
+      - ${DEPENDS}
     environment:
       ME_CONFIG_MONGODB_SERVER: mongodb-rp
       ME_CONFIG_MONGODB_ADMINUSERNAME: mguser
       ME_CONFIG_MONGODB_ADMINPASSWORD: mgpwd123
-      ME_CONFIG_MONGODB_PORT: '27017'
+      ME_CONFIG_MONGODB_PORT: ${MGDB_PORT}
 
 
 volumes:
